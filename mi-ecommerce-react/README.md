@@ -1,7 +1,7 @@
 # Pre-Entrega | Talentotech 
 # React + Vite
 
-proyecto de simulacion de ecommerce para talento tech
+proyecto de  ecommerce para talento tech
 # Consignas:
 ¡Hemos llegado a un momento clave! Es el momento de realizar la pre-entrega del proyecto trabajado hasta el momento. Como es de costumbre en varias empresas, nos toca pronto juntarnos con nuestro cliente para ver como va creciendo su sitio web.
 
