@@ -29,7 +29,7 @@ const ProductList = () => {
         // Simular un retraso en la carga para que puedas ver el esqueleto
         await new Promise(resolve => setTimeout(resolve, 1000)); // Retraso de 1 segundo
 
-        const response = await fetch('https://fakestoreapi.com/products');
+        const response = await fetch('https://68599f039f6ef9611153b9ee.mockapi.io/api/v1/products');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

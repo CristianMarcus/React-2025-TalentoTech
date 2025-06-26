@@ -5,9 +5,10 @@ import Footer from '../Footer/Footer';
 
 const Layout = ({ children }) => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="d-flex flex-column min-vh-100"> 
       <Header />
-      <main className="flex-grow container mx-auto p-6 md:p-10 lg:p-12"> {/* Más padding para espacio */}
+      {/* Añadimos la clase 'main-content-wrapper' aquí */}
+      <main className="flex-grow-1 container my-4 px-3 main-content-wrapper"> 
         {children}
       </main>
       <Footer />

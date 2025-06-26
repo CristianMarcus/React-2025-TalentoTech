@@ -1,82 +1,70 @@
-# Pre-Entrega | Talentotech 
-# React + Vite
+# Nombre de Tu Tienda E-commerce
 
-proyecto de  ecommerce para talento tech
-# Consignas:
-¡Hemos llegado a un momento clave! Es el momento de realizar la pre-entrega del proyecto trabajado hasta el momento. Como es de costumbre en varias empresas, nos toca pronto juntarnos con nuestro cliente para ver como va creciendo su sitio web.
+Una aplicación de E-commerce básica construida con React y React-Bootstrap, con un sistema de carrito de compras funcional y gestión de estado utilizando Context API.
 
-A continuación el equipo te detallará lo que se espera tener en esta primera presentación del sitio a nuestro cliente:
+## Características
 
-Pre-Entrega de Proyecto
+* **Página de Inicio:** Muestra un listado de productos disponibles.
+* **Detalles del Producto:** Página dedicada para cada producto con descripción, precio, y opción para añadir al carrito.
+* **Carrito de Compras:**
+    * Añadir/Eliminar productos.
+    * Actualizar cantidades.
+    * Vaciar el carrito completamente.
+    * Persistencia de datos del carrito en `localStorage`.
+    * Simulación de "Finalizar Compra".
+* **Notificaciones:** Retroalimentación al usuario mediante `react-toastify`.
+* **Estilos:** Implementado con React-Bootstrap para un diseño responsivo y moderno.
+* **Gestión de Estado:** `React Context API` para el estado global del carrito.
 
-Obligatorio | Entregable
+## Tecnologías Utilizadas
 
-Requerimientos del Proyecto
+* **React** (con Vite)
+* **React Router DOM**
+* **React Bootstrap**
+* **React Toastify**
+* **Framer Motion** (para animaciones, si la sigues usando)
+* **React Helmet Async** (para SEO, si la sigues usando)
 
-# Requerimiento #1:
-Crear una funcionalidad básica para el manejo de un carrito de compras.
+## Instalación y Ejecución
 
-Crear un componente para listar los productos disponibles.
+Sigue estos pasos para configurar y ejecutar el proyecto en tu máquina local.
 
-Usar el hook useState para manejar el estado del carrito.
+### Prerrequisitos
 
-Implementar un evento de clic que permita agregar productos al carrito.
+Asegúrate de tener Node.js y npm (o Yarn) instalados en tu sistema.
 
-Mostrar el carrito con los productos seleccionados en otro componente.
+* [Node.js](https://nodejs.org/) (versión LTS recomendada)
 
-Crear un Layout del eCommerce
+### Pasos
 
-Pre-Entrega de Proyecto
+1.  **Clonar el repositorio:**
+    ```bash
+    git clone [https://github.com/tu-usuario/tu-repositorio.git](https://github.com/tu-usuario/tu-repositorio.git)
+    cd tu-repositorio
+    ```
+    (Reemplaza `https://github.com/tu-usuario/tu-repositorio.git` con la URL de tu repositorio real).
 
-Obligatorio | Entregable
+2.  **Instalar dependencias:**
+    ```bash
+    npm install
+    # o si usas yarn
+    # yarn install
+    ```
 
-Requerimientos del Proyecto
+3.  **Ejecutar la aplicación en modo desarrollo:**
+    ```bash
+    npm run dev
+    # o si usas yarn
+    # yarn dev
+    ```
+    La aplicación se iniciará en `http://localhost:5173` (o un puerto similar).
 
-# Requerimiento #2:
-Conectar la aplicación a una API que provea información sobre los productos.
+4.  **Construir para producción (opcional):**
+    ```bash
+    npm run build
+    # o si usas yarn
+    # yarn build
+    ```
+    Esto creará una carpeta `dist` con la versión optimizada de tu aplicación lista para desplegar.
 
-Integración con una API
-
-Estado de carga y errores
-
-Gestión del estado con useState
-
-Actualizar el diseño del eCommerce
-
-Manejo de efectos secundarios con useEffect
-
-Ampliación del carrito
-
-Pre-Entrega de Proyecto
-
-Obligatorio | Entregable
-
-Requerimientos del Proyecto
-
-# Requerimiento #3: 
-Integración de rutas
-
-Implementación de rutas
-
-Estado de carga y manejo de errores
-
-Crear componente para cada sección
-
-Navegar entre productos
-
-Pre-Entrega de Proyecto
-
-Obligatorio | Entregable
-
-Requerimientos del Proyecto
-
-# Requerimiento #4: 
-Implementar rutas dinámicas y protegidas
-
-Rutas Dinámicas
-
-Interactividad
-
-Rutas Protegidas
-
-Navbar
+## Estructura del Proyecto

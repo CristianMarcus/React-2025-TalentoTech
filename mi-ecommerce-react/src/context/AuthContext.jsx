@@ -1,54 +1,65 @@
-// src/context/AuthContext.js
-import React, { createContext, useState, useContext, useEffect } from 'react';
+// src/context/AuthContext.jsx
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import { toast } from 'react-toastify';
 
-// 1. Crear el Contexto de Autenticación
-export const AuthContext = createContext();
+export const AuthContext = createContext(null);
 
-// 2. Crear el Proveedor (Provider) de Autenticación
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
+
 export const AuthProvider = ({ children }) => {
-  // Estado de autenticación, inicializado desde localStorage si existe
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    // Intentar cargar el estado de autenticación desde localStorage al inicio
-    const storedAuth = localStorage.getItem('isAuthenticated');
-    return storedAuth === 'true'; // localStorage guarda como string, convertir a booleano
+  const [user, setUser] = useState(() => {
+    try {
+      const storedUser = localStorage.getItem('user');
+      return storedUser ? JSON.parse(storedUser) : null;
+    } catch (error) {
+      console.error("Error al parsear user de localStorage:", error);
+      return null;
+    }
   });
 
-  // Efecto para guardar el estado de autenticación en localStorage cada vez que cambia
   useEffect(() => {
-    localStorage.setItem('isAuthenticated', isAuthenticated);
-  }, [isAuthenticated]);
+    try {
+      if (user) {
+        localStorage.setItem('user', JSON.stringify(user));
+      } else {
+        localStorage.removeItem('user');
+      }
+    } catch (error) {
+      console.error("Error al guardar user en localStorage:", error);
+    }
+  }, [user]);
 
-  // Función para iniciar sesión
-  const login = () => {
-    setIsAuthenticated(true);
+  // Función para simular el inicio de sesión con credenciales específicas
+  const login = (username, password) => {
+    // AHORA: Solo permite iniciar sesión con 'admin' / 'admin'
+    if (username === 'admin' && password === 'admin') {
+      const userData = { username, role: 'admin' }; // Asignamos rol 'admin'
+      setUser(userData);
+      toast.success(`¡Bienvenido, ${username}! Has iniciado sesión.`, { autoClose: 2000 });
+      return true; // Login exitoso
+    } else {
+      toast.error("Credenciales incorrectas. Intenta con 'admin' / 'admin'.", { autoClose: 3000 });
+      return false; // Login fallido
+    }
   };
 
-  // Función para cerrar sesión
   const logout = () => {
-    setIsAuthenticated(false);
-    // Eliminar cualquier token o dato de sesión de localStorage
-    localStorage.removeItem('isAuthenticated');
+    setUser(null);
+    toast.info("Has cerrado sesión.", { autoClose: 2000 });
   };
 
-  
-  const contextValue = {
-    isAuthenticated,
+  const authContextValue = {
+    user,
+    isAuthenticated: !!user,
     login,
     logout,
   };
 
   return (
-    <AuthContext.Provider value={contextValue}>
+    <AuthContext.Provider value={authContextValue}>
       {children}
     </AuthContext.Provider>
   );
-};
-
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
 };

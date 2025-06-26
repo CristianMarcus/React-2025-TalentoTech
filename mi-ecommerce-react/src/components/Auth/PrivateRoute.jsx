@@ -1,14 +1,21 @@
 // src/components/auth/PrivateRoute.jsx
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext'; // ¡Importamos el custom hook de Auth!
+import { useAuth } from '../../context/AuthContext';
 
-// PrivateRoute ya no necesita isAuthenticated como prop
 const PrivateRoute = ({ children }) => {
-  const { isAuthenticated } = useAuth(); // Obtenemos isAuthenticated del contexto
+  const { isAuthenticated, loading } = useAuth();
 
-  // Si el usuario no está autenticado, redirige a la página de login
-  return isAuthenticated ? children : <Navigate to="/login" replace />;
+  if (loading) {
+    // Reemplazado text-center mt-20 text-xl por clases de Bootstrap
+    return <div className="text-center mt-5 fs-4">Cargando autenticación...</div>; {/* text-center mt-5 (equivalente a mt-20), fs-4 (equivalente a text-xl) */}
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
 };
 
 export default PrivateRoute;

@@ -1,47 +1,112 @@
-// src/components/Cart/Cart.jsx
 import React from 'react';
 import CartItem from './CartItem';
-import { Link } from 'react-router-dom';
-import { useCarrito } from '../../context/CarritoContext'; // ¡Importamos el custom hook!
+import { Link, useNavigate } from 'react-router-dom';
+import { useCarrito } from '../../context/CarritoContext';
+import { Container, Card, Button, Row, Col } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
-// Cart ya no necesita cartItems, onUpdateQuantity, onRemoveItem como props
 const Cart = () => {
-  const { cartItems, handleUpdateQuantity, handleRemoveItem } = useCarrito(); // Obtenemos todo del contexto
+  const { cartItems, handleUpdateQuantity, handleRemoveItem, clearCart } = useCarrito();
+  const navigate = useNavigate();
 
   const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
+  const handleCheckout = () => {
+    if (cartItems.length === 0) {
+      toast.warn('Tu carrito está vacío. ¡No hay nada que comprar!', {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
+
+    clearCart();
+
+    toast.success('¡Compra finalizada con éxito! Gracias por tu pedido.', {
+      position: "top-center",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
   return (
-    <div className="bg-white p-12 rounded-2xl shadow-2xl max-w-5xl mx-auto mt-10 border border-gray-100">
-      <h2 className="text-4xl font-bold text-gray-800 mb-10 text-center">Tu Carrito de Compras</h2>
-      {cartItems.length === 0 ? (
-        <div className="text-center py-16">
-          <p className="text-gray-600 text-2xl mb-8">Tu carrito está vacío. ¡Descubre productos increíbles!</p>
-          <Link to="/products" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-10 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg text-xl transform hover:-translate-y-0.5">
-            Ir a Productos
-          </Link>
-        </div>
-      ) : (
-        <>
-          <div className="divide-y divide-gray-100 mb-8">
-            {cartItems.map(item => (
-              <CartItem
-                key={item.id}
-                item={item}
-                onUpdateQuantity={handleUpdateQuantity} // Usamos del contexto
-                onRemoveItem={handleRemoveItem} // Usamos del contexto
-              />
-            ))}
-          </div>
-          <div className="flex justify-between items-center mt-10 pt-8 border-t-2 border-gray-300">
-            <h3 className="text-3xl font-bold text-gray-800">Total:</h3>
-            <p className="text-4xl font-extrabold text-green-700">${total.toFixed(2)}</p>
-          </div>
-          <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-5 px-10 rounded-lg w-full mt-12 text-2xl transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-70 transform hover:-translate-y-0.5">
-            Finalizar Compra
-          </button>
-        </>
-      )}
-    </div>
+    <Container className="my-5">
+      <Card className="bg-dark text-white p-4 p-md-5 rounded-4 shadow-lg border border-secondary">
+        <Card.Body>
+          <h2 className="display-5 fw-bold mb-4 text-center">Tu Carrito de Compras</h2>
+          {cartItems.length === 0 ? (
+            <div className="text-center py-5">
+              <p className="fs-4 text-white-50 mb-4">Tu carrito está vacío. ¡Descubre productos increíbles!</p>
+              <Button
+                as={Link}
+                to="/products"
+                variant="primary"
+                className="fw-semibold py-3 px-5 rounded-3 shadow text-decoration-none" // text-decoration-none AÑADIDO
+              >
+                Ir a Productos
+              </Button>
+            </div>
+          ) : (
+            <>
+              <div className="mb-4">
+                {cartItems.map(item => (
+                  <CartItem
+                    key={item.id}
+                    item={item}
+                    onUpdateQuantity={handleUpdateQuantity}
+                    onRemoveItem={handleRemoveItem}
+                  />
+                ))}
+              </div>
+              <div className="d-flex justify-content-between align-items-center mt-4 pt-3 border-top border-white-50">
+                <h3 className="fs-3 fw-bold text-white">Total:</h3>
+                <p className="display-6 fw-bold text-success">${total.toFixed(2)}</p>
+              </div>
+
+              <div className="d-flex flex-column flex-md-row justify-content-between gap-3 mt-4">
+                <Button
+                  as={Link}
+                  to="/products"
+                  variant="outline-info"
+                  className="fw-semibold py-2 px-4 rounded-3 shadow flex-grow-1 flex-md-grow-0 text-decoration-none" // text-decoration-none AÑADIDO
+                  aria-label="Continuar comprando productos"
+                >
+                  Continuar Comprando
+                </Button>
+
+                {/* CORRECCIÓN DE RESPONSIVIDAD AQUÍ: d-flex flex-column para apilar en pantallas pequeñas, flex-sm-row para fila en 'sm' y más grandes */}
+                <div className="d-flex flex-column flex-sm-row gap-2 justify-content-end flex-grow-1 flex-md-grow-0">
+                  <Button
+                    variant="outline-danger"
+                    onClick={clearCart}
+                    className="fw-semibold py-2 px-4 rounded-3 shadow"
+                    aria-label="Vaciar todo el carrito de compras"
+                  >
+                    Vaciar Carrito
+                  </Button>
+                  <Button
+                    variant="success"
+                    onClick={handleCheckout}
+                    className="fw-semibold py-2 px-5 rounded-3 shadow"
+                  >
+                    Finalizar Compra
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
 

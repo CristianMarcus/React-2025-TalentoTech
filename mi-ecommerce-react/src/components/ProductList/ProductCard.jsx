@@ -2,49 +2,84 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCarrito } from '../../context/CarritoContext';
-import { motion } from 'framer-motion'; // ¡Importamos motion!
+import { motion } from 'framer-motion';
+import { toast } from 'react-toastify';
 
-// ProductCard ahora recibe 'variants' para la animación en cascada
+// Importar componentes de React-Bootstrap
+import { Card, Button } from 'react-bootstrap';
+
+// === NUEVO: Definición del PLACEHOLDER_IMAGE ===
+const PLACEHOLDER_IMAGE = 'https://via.placeholder.com/400x300?text=Imagen+No+Disponible';
+
 const ProductCard = ({ product, variants }) => {
   const { handleAddToCart } = useCarrito();
 
+  if (!product) {
+    return null;
+  }
+
   return (
     <motion.div
-      // Animación de entrada y animación en cascada (staggered)
-      variants={variants} // Usa las variantes pasadas desde ProductList
-      initial="hidden" // Estado inicial definido en las variantes
-      animate="visible" // Estado final definido en las variantes
-      // Animación al pasar el ratón y al hacer clic
-      whileHover={{ scale: 1.05, boxShadow: '0 15px 25px rgba(0, 0, 0, 0.2)' }}
+      variants={variants}
+      initial="hidden"
+      animate="visible"
+      whileHover={{ scale: 1.05, boxShadow: '0 15px 25px rgba(0, 0, 0, 0.4)' }}
       whileTap={{ scale: 0.98 }}
-      className="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col items-center text-center p-7 border border-gray-100 transform cursor-pointer group"
+      className="h-100"
     >
-      <Link to={`/products/${product.id}`} className="block">
-        <img
-          src={product.image}
-          alt={product.title}
-          className="w-48 h-48 object-contain mb-6 transform group-hover:scale-110 transition-transform duration-300"
-        />
-      </Link>
-      <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">{product.title}</h3>
-      <p className="text-sm text-gray-600 mb-4 line-clamp-3 leading-relaxed">{product.description}</p>
-      <p className="text-3xl font-extrabold text-green-700 mb-6">${product.price.toFixed(2)}</p>
-      <div className="flex flex-col gap-4 w-full">
-        <motion.button // Usamos motion.button para animaciones de clic/hover
-          onClick={() => handleAddToCart(product)}
-          className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3.5 px-7 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-70 transform"
-          whileHover={{ scale: 1.02 }} // Pequeña animación al pasar el ratón
-          whileTap={{ scale: 0.98 }}   // Pequeña animación al hacer clic
-        >
-          Agregar al Carrito
-        </motion.button>
-        <Link
-          to={`/products/${product.id}`}
-          className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-3.5 px-7 rounded-lg transition-all duration-300 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-70 transform hover:-translate-y-0.5"
-        >
-          Ver Detalles
+      <Card className="bg-white rounded-4 shadow-lg border border-light p-4 d-flex flex-column h-100 text-center">
+        {/* Enlace a detalles del producto - AÑADIDO aria-label */}
+        <Link to={`/products/${product.id}`} className="d-block mx-auto mb-3" aria-label={`Ver detalles de ${product.name}`}>
+          <Card.Img
+            variant="top"
+            // === CAMBIO CRÍTICO AQUÍ: Ahora usando product.image ===
+            src={product.image && product.image.trim() !== '' ? product.image : PLACEHOLDER_IMAGE}
+            alt={product.name}
+            className="rounded-3 shadow-sm"
+            style={{ width: '12rem', height: '12rem', objectFit: 'contain' }}
+            onError={(e) => {
+              e.currentTarget.onerror = null; // Previene bucles infinitos de error
+              e.currentTarget.src = PLACEHOLDER_IMAGE; // Establece la imagen de placeholder
+              console.warn(`Error al cargar la imagen para el producto ${product.name} (ID: ${product.id}). Usando placeholder.`);
+            }}
+          />
         </Link>
-      </div>
+        <Card.Body className="d-flex flex-column align-items-center text-center p-0 flex-grow-1">
+          <Card.Title className="h5 fw-semibold text-dark mb-2" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+            {product.name}
+          </Card.Title>
+          <Card.Text className="small text-body mb-3" style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', lineHeight: '1.4' }}>
+            {product.description}
+          </Card.Text>
+          <p className="h4 fw-bold text-success mb-4 mt-auto">${product.price?.toFixed(2) || '0.00'}</p>
+        </Card.Body>
+
+        <div className="d-flex flex-column gap-2 w-100">
+          {/* Botón Agregar al Carrito - No necesita aria-label, el texto es claro */}
+          <motion.button
+            onClick={() => {
+              handleAddToCart(product);
+              toast.success(`${product.name} agregado al carrito!`, {
+                position: "top-right",
+                autoClose: 2000,
+              });
+            }}
+            className="btn btn-primary fw-semibold py-2 px-4 rounded-3 shadow w-100"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Agregar al Carrito
+          </motion.button>
+          {/* Botón Ver Detalles - No necesita aria-label, el texto es claro */}
+          <Button
+            as={Link}
+            to={`/products/${product.id}`}
+            className="btn btn-primary fw-semibold py-2 px-4 rounded-3 shadow w-100"
+          >
+            Ver Detalles
+          </Button>
+        </div>
+      </Card>
     </motion.div>
   );
 };

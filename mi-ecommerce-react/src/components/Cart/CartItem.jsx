@@ -1,40 +1,92 @@
 // src/components/Cart/CartItem.jsx
 import React from 'react';
+import { Row, Col, Button, Card } from 'react-bootstrap';
 
 const CartItem = ({ item, onUpdateQuantity, onRemoveItem }) => {
+  const { image, name, price = 0, quantity = 0, id } = item || {};
+  // URL de imagen de placeholder más descriptiva y adecuada para miniaturas
+  const PLACEHOLDER_IMAGE = 'https://via.placeholder.com/100x100?text=Sin+Imagen';
+
   return (
-    <div className="flex items-center justify-between border-b border-gray-200 py-6 last:border-b-0">
-      <div className="flex items-center flex-grow">
-        <img src={item.image} alt={item.title} className="w-28 h-28 object-contain mr-6 rounded-xl shadow-md border border-gray-100 p-2" />
-        <div className="flex-grow">
-          <h4 className="font-semibold text-xl text-gray-800 mb-1">{item.title}</h4>
-          <p className="text-gray-600 text-base">${item.price.toFixed(2)}</p>
-          <div className="flex items-center mt-4">
-            <button
-              onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
-              className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-xl font-semibold"
-              disabled={item.quantity === 1}
-            >
-              -
-            </button>
-            <span className="mx-4 text-2xl font-medium">{item.quantity}</span>
-            <button
-              onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
-              className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors duration-200 text-xl font-semibold"
-            >
-              +
-            </button>
-            <button
-              onClick={() => onRemoveItem(item.id)}
-              className="ml-8 bg-red-500 hover:bg-red-600 text-white text-base py-2 px-5 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+    <Card className="mb-3 shadow-sm border border-secondary bg-dark text-white">
+      <Card.Body>
+        <Row className="align-items-center g-3">
+          {/* Columna para la Imagen */}
+          <Col xs={4} sm={3} md={2} className="d-flex justify-content-center align-items-center">
+            <img
+              src={image && image.trim() !== '' ? image : PLACEHOLDER_IMAGE}
+              alt={name || 'Producto en el carrito'}
+              className="img-fluid rounded shadow-sm border border-secondary p-1"
+              style={{ width: '80px', height: '80px', objectFit: 'contain' }}
+              onError={(e) => { // Añadido el manejador de errores de imagen
+                e.currentTarget.onerror = null; // Previene bucles infinitos de error
+                e.currentTarget.src = PLACEHOLDER_IMAGE; // Establece la imagen de placeholder
+                console.warn(`Error al cargar la imagen de ${name || 'un producto'}. Usando placeholder.`);
+              }}
+            />
+          </Col>
+
+          {/* Columna para Nombre y Precio */}
+          <Col xs={8} sm={9} md={5}>
+            <h5 className="fw-semibold mb-1" title={name}>
+              {name || 'Producto Desconocido'}
+            </h5>
+            <p className="text-light mb-2">${price.toFixed(2)}</p>
+          </Col>
+
+          {/* Columna para Controles de Cantidad, PRECIO TOTAL Y Botón Eliminar */}
+          <Col
+            xs={12}
+            md={5}
+            className="d-flex flex-column flex-md-row justify-content-md-end align-items-center gap-2 mt-2 mt-md-0 flex-wrap"
+          >
+            {/* Grupo de botones para controlar la cantidad */}
+            <div className="d-flex align-items-center me-md-2 w-auto">
+              <Button
+                onClick={() => onUpdateQuantity(id, quantity - 1)}
+                variant="outline-light"
+                className="px-3 py-1 rounded-pill"
+                disabled={quantity <= 1}
+                aria-label={`Disminuir cantidad de ${name || 'este producto'}`}
+              >
+                -
+              </Button>
+              <span className="mx-2 fs-5 fw-medium text-white" aria-live="polite" aria-atomic="true">
+                {quantity}
+              </span>
+              <Button
+                onClick={() => onUpdateQuantity(id, quantity + 1)}
+                variant="outline-light"
+                className="px-3 py-1 rounded-pill"
+                aria-label={`Aumentar cantidad de ${name || 'este producto'}`}
+              >
+                +
+              </Button>
+            </div>
+            
+            {/* Precio total por item visible solo en escritorio */}
+            <span className="fw-bold fs-5 text-success mb-0 d-none d-md-inline-block ms-md-auto me-2">
+                ${(price * quantity).toFixed(2)}
+            </span>
+
+            {/* Botón Eliminar */}
+            <Button
+              onClick={() => onRemoveItem(id)}
+              variant="danger"
+              size="sm"
+              className="px-4 shadow-sm"
+              aria-label={`Eliminar ${name || 'este producto'} del carrito`}
             >
               Eliminar
-            </button>
-          </div>
-        </div>
-      </div>
-      <p className="font-bold text-3xl text-green-700 ml-6">${(item.price * item.quantity).toFixed(2)}</p>
-    </div>
+            </Button>
+          </Col>
+          {/* Precio total visible solo en móviles, en su propia fila para evitar superposición */}
+          <Col xs={12} className="d-block d-md-none text-center mt-2">
+            <p className="fw-bold fs-4 text-success mb-0">Total: ${(price * quantity).toFixed(2)}</p>
+          </Col>
+        </Row>
+      </Card.Body>
+    </Card>
   );
 };
 

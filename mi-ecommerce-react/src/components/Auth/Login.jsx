@@ -1,67 +1,81 @@
 // src/components/auth/Login.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext'; // ¡Importamos el custom hook de Auth!
+import { useAuth } from '../../context/AuthContext';
+import { Helmet } from 'react-helmet-async';
 
-// Login ya no necesita onLogin como prop
+// Importar componentes de React-Bootstrap para formularios
+import { Container, Form, Button, Card } from 'react-bootstrap';
+
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth(); // Obtenemos la función login del contexto
+  const { login } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (username === 'admin' && password === 'admin') {
-      login(); // Llamamos a la función login del contexto
+    const success = login(username, password);
+
+    if (success) {
       navigate('/dashboard');
-    } else {
-      alert('Credenciales incorrectas. Usa admin/admin');
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-[70vh] py-10">
-      <form onSubmit={handleSubmit} className="bg-white p-12 rounded-2xl shadow-2xl w-full max-w-lg border border-gray-100">
-        <h2 className="text-4xl font-bold text-center text-gray-800 mb-10">Iniciar Sesión</h2>
-        <div className="mb-7">
-          <label className="block text-gray-700 text-lg font-semibold mb-2" htmlFor="username">
-            Usuario
-          </label>
-          <input
-            type="text"
-            id="username"
-            className="shadow-inner appearance-none border border-gray-300 rounded-lg w-full py-3.5 px-5 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-lg"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="admin"
-            autoComplete="username"
-          />
-        </div>
-        <div className="mb-9">
-          <label className="block text-gray-700 text-lg font-semibold mb-2" htmlFor="password">
-            Contraseña
-          </label>
-          <input
-            type="password"
-            id="password"
-            className="shadow-inner appearance-none border border-gray-300 rounded-lg w-full py-3.5 px-5 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-lg"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="admin"
-            autoComplete="current-password"
-          />
-        </div>
-        <div className="flex items-center justify-center">
-          <button
-            type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-10 rounded-lg shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-70 transition-all duration-300 text-xl transform hover:-translate-y-0.5"
-          >
-            Entrar
-          </button>
-        </div>
-      </form>
-    </div>
+    <>
+      <Helmet>
+        <title>Iniciar Sesión - Mi Tienda E-commerce</title>
+        <meta name="description" content="Inicia sesión en tu cuenta de administrador de Mi Tienda E-commerce para acceder al panel de control." />
+        <meta name="keywords" content="login, iniciar sesión, administración, panel de control, e-commerce" />
+      </Helmet>
+      {/* Contenedor principal centrado con altura mínima y padding */}
+      <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '70vh', paddingBlock: '2.5rem' }}>
+        <Card className="p-4 p-md-5 rounded-4 shadow-lg border border-light" style={{ maxWidth: '32rem', width: '100%' }}>
+          <Card.Body>
+            {/* Título del formulario */}
+            <h2 className="display-5 fw-bold text-center text-dark mb-5">Iniciar Sesión</h2>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-4" controlId="username">
+                <Form.Label className="fs-5 fw-semibold text-secondary">Usuario</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="admin"
+                  autoComplete="username"
+                  className="p-3 fs-5 text-secondary rounded shadow-sm" // Bootstrap styling
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-5" controlId="password">
+                <Form.Label className="fs-5 fw-semibold text-secondary">Contraseña</Form.Label>
+                <Form.Control
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="admin"
+                  autoComplete="current-password"
+                  className="p-3 fs-5 text-secondary rounded shadow-sm" // Bootstrap styling
+                />
+              </Form.Group>
+
+              <div className="d-flex justify-content-center">
+                <Button
+                  type="submit"
+                  variant="primary" // Reemplaza bg-blue-600 hover:bg-blue-700
+                  className="fw-bold py-3 px-5 rounded-3 shadow-lg fs-4" // Clases de Bootstrap
+                  // Las clases de hover (shadow-xl, transform) y focus (ring) de Tailwind
+                  // necesitarían CSS personalizado para ser replicadas en Bootstrap.
+                >
+                  Entrar
+                </Button>
+              </div>
+            </Form>
+          </Card.Body>
+        </Card>
+      </Container>
+    </>
   );
 };
 
