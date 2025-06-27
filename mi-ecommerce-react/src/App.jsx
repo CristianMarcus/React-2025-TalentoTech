@@ -16,7 +16,11 @@ import { CarritoProvider } from './context/CarritoContext';
 import { AuthProvider } from './context/AuthContext';
 
 // Importa tu nuevo componente FloatingCart
-import FloatingCart from './components/FloatingCart/FloatingCart'; 
+import FloatingCart from './components/FloatingCart/FloatingCart';
+
+// === NUEVA IMPORTACIÓN: Tu componente de carga sofisticado ===
+import LoadingScreen from './components/LoadingScreen/LoadingScreen'; 
+// === FIN DE NUEVA IMPORTACIÓN ===
 
 // ====================================================================
 // Define tus componentes de página para Carga Perezosa
@@ -41,15 +45,9 @@ function App() {
             <Layout>
               {/* ==================================================================== */}
               {/* Envuelve tus rutas con Suspense */}
-              {/* Puedes añadir un componente de carga más sofisticado aquí, como un spinner */}
+              {/* Ahora usa tu componente LoadingScreen como fallback */}
               {/* ==================================================================== */}
-              <Suspense fallback={
-                <div className="d-flex justify-content-center align-items-center vh-100">
-                  <div className="spinner-border text-primary" role="status">
-                    <span className="visually-hidden">Cargando...</span>
-                  </div>
-                </div>
-              }>
+              <Suspense fallback={<LoadingScreen />}>
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/products" element={<ProductsPage />} />

@@ -11,7 +11,7 @@ const HomePage = () => {
     <>
       <Helmet>
         {/* Títulos y descripciones SEO principales */}
-        <title>Inicio - Mi eCommerce: Tu Tienda de Electrónica Online</title>
+        <title>Home - Mi eCommerce-TalentoTech: Tu Tienda de Electrodomésticos Online</title>
         <meta name="description" content="Bienvenido a Mi eCommerce. Descubre nuestra exclusiva colección de productos electrónicos de alta calidad: desde Smart TVs hasta electrodomésticos para el hogar. Innovación y estilo te esperan." />
         <meta name="keywords" content="eCommerce, tienda online, productos electrónicos, comprar, ofertas, tecnología, electrodomésticos, Smart TV, neveras, lavadoras, hogar inteligente" />
 

@@ -8,8 +8,7 @@ import { Helmet } from 'react-helmet-async';
 
 // Importar componentes de React-Bootstrap
 import { Container, Row, Col, Card, Button, Placeholder } from 'react-bootstrap';
-
-const MOCKAPI_PRODUCTS_URL = "https://68599f039f6ef9611153b9ee.mockapi.io/api/v1/productos";
+import { MOCKAPI_PRODUCTS_URL } from '../Config/api';
 
 // Componente Skeleton para la carga (Actualizado con Bootstrap)
 const ProductDetailSkeleton = () => (

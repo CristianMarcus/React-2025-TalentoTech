@@ -1,0 +1,81 @@
+/* src/components/LoadingScreen/LoadingScreen.css */
+
+.loading-screen-container {
+  position: fixed; /* Ocupa toda la pantalla */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Ancho del viewport */
+  height: 100vh; /* Alto del viewport */
+  background-color: #022b7e; /* Un azul oscuro, puedes cambiarlo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Asegura que esté por encima de todo */
+  color: white; /* Color de texto predeterminado */
+  flex-direction: column; /* Para apilar el contenido verticalmente */
+  animation: fadeInBackground 0.5s ease-out; /* Animación de aparición del fondo */
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  border-radius: 10px;
+  /* Puedes añadir un fondo sutil o un box-shadow si quieres */
+}
+
+.loading-logo {
+  width: 80px; /* Tamaño del logo */
+  height: 80px;
+  margin-bottom: 1.5rem;
+  animation: rotateAndScale 2s ease-in-out infinite alternate; /* Animación para el logo */
+}
+
+.loading-text {
+  font-size: 2.5rem; /* Tamaño del título de carga */
+  font-weight: bold;
+  color: #fdbb2d; /* Color que contraste con el fondo (amarillo/naranja) */
+  margin-bottom: 1rem;
+  animation: pulseText 2s ease-in-out infinite; /* Animación de pulso para el texto */
+}
+
+.loading-message {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8); /* Un blanco más suave */
+  margin-top: 0.5rem;
+}
+
+/* Animaciones CSS */
+@keyframes fadeInBackground {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes rotateAndScale {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); } /* Rota y se agranda un poco */
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes pulseText {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; } /* Parpadea suavemente */
+  100% { opacity: 1; }
+}
+
+/* Media queries para ajustar el tamaño en móviles */
+@media (max-width: 768px) {
+  .loading-text {
+    font-size: 1.8rem;
+  }
+  .loading-message {
+    font-size: 1rem;
+  }
+  .loading-logo {
+    width: 60px;
+    height: 60px;
+  }
+}

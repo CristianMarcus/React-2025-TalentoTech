@@ -7,16 +7,16 @@ import { Helmet } from 'react-helmet-async';
 // Importar componentes de React-Bootstrap
 import { Container, Row, Col, Card, Button as BootstrapButton, Form, Pagination, InputGroup } from 'react-bootstrap';
 
-// Asumiendo que ProductCard maneja su propio estilo internamente,
-// DEBERÁS REVISAR ProductCard.jsx para asegurarte de que también use Bootstrap
 import ProductCard from '../components/ProductList/ProductCard';
 
-const MOCKAPI_PRODUCTS_URL = "https://68599f039f6ef9611153b9ee.mockapi.io/api/v1/productos";
+// === CAMBIO CLAVE AQUÍ: Importa la URL desde el archivo de configuración ===
+import { MOCKAPI_PRODUCTS_URL } from '../Config/api'; 
+// === FIN DEL CAMBIO ===
+
 
 // Componente Skeleton para la carga (Actualizado con Bootstrap y animación de pulso)
 const ProductCardSkeleton = () => (
   <Card className="h-100 shadow-sm" style={{ overflow: 'hidden' }}>
-    {/* Aplica la clase animate-pulse aquí */}
     <div className="w-100 bg-secondary animate-pulse" style={{ height: '200px' }}></div>
     <Card.Body className="d-flex flex-column">
       <div className="bg-light rounded mb-2 animate-pulse" style={{ height: '24px', width: '75%' }}></div>
@@ -33,26 +33,25 @@ const ProductsPage = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Estados para la paginación
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(8); // Número de productos por página
+  const [productsPerPage] = useState(8); 
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(MOCKAPI_PRODUCTS_URL);
+        // === Usa la constante importada directamente ===
+        const response = await fetch(MOCKAPI_PRODUCTS_URL); 
         if (!response.ok) {
           throw new Error('Error al cargar los productos del catálogo.');
         }
         const data = await response.json();
-        // === CAMBIO CLAVE AQUÍ: Mapear 'avatar' a 'image' ===
         const productsWithImage = data.map(product => ({
           ...product,
-          image: product.avatar // Asigna el valor de 'avatar' a 'image'
+          image: product.avatar 
         }));
-        setProducts(productsWithImage); // Usa los productos con la propiedad 'image'
+        setProducts(productsWithImage); 
       } catch (err) {
         console.error("Error al obtener productos para la tienda:", err);
         setError(err.message || 'No se pudieron cargar los productos.');
@@ -68,9 +67,8 @@ const ProductsPage = () => {
     fetchProducts();
   }, []);
 
-  // Lógica de filtrado de productos con useMemo
   const filteredProducts = useMemo(() => {
-    setCurrentPage(1); // Resetear a la primera página cuando el filtro cambia
+    setCurrentPage(1); 
     if (!searchTerm) {
       return products;
     }
@@ -81,7 +79,6 @@ const ProductsPage = () => {
     );
   }, [products, searchTerm]);
 
-  // Lógica de paginación
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
@@ -116,12 +113,10 @@ const ProductsPage = () => {
       <Container className="p-4 my-4">
         <h1 className="display-4 fw-bold text-center text-yellow mb-5">Nuestros Productos</h1>
 
-        {/* Barra de Búsqueda con Icono */}
         <Row className="justify-content-center mb-4">
           <Col xs={12} md={6} lg={6}>
             <InputGroup>
               <InputGroup.Text className="p-3 border rounded-start shadow-sm" style={{ borderColor: 'transparent' }}>
-                {/* El icono es decorativo, no necesita ARIA */}
                 <i className="bi bi-search text-secondary"></i>
               </InputGroup.Text>
               <Form.Control
@@ -130,7 +125,6 @@ const ProductsPage = () => {
                 className="p-3 border rounded-end shadow-sm"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                // MEJORA: Añadir aria-label para el campo de búsqueda
                 aria-label="Buscar productos por nombre o categoría"
               />
             </InputGroup>
@@ -164,7 +158,6 @@ const ProductsPage = () => {
             <Row xs={1} sm={2} md={3} lg={4} className="g-4">
               {currentProducts.map((product) => (
                 <Col key={product.id}>
-                  {/* Asegúrate de que ProductCard sea accesible (imágenes con alt, botones con labels) */}
                   <ProductCard
                     product={product}
                     variants={itemVariants}
@@ -175,22 +168,21 @@ const ProductsPage = () => {
           </motion.div>
         )}
 
-        {/* <-- Paginación --> */}
         {!loading && !error && filteredProducts.length > productsPerPage && (
           <Row className="mt-5">
             <Col className="d-flex justify-content-center">
-              <Pagination aria-label="Navegación de páginas de productos"> {/* MEJORA: Etiqueta ARIA para la navegación de paginación */}
+              <Pagination aria-label="Navegación de páginas de productos">
                 <Pagination.Prev
                   onClick={() => paginate(currentPage - 1)}
                   disabled={currentPage === 1}
-                  aria-label="Ir a la página anterior de productos" // MEJORA: Etiqueta ARIA para botón "Anterior"
+                  aria-label="Ir a la página anterior de productos"
                 />
                 {Array.from({ length: totalPages }, (_, i) => (
                   <Pagination.Item
                     key={i + 1}
                     active={i + 1 === currentPage}
                     onClick={() => paginate(i + 1)}
-                    aria-label={`Ir a la página ${i + 1} de productos`} // MEJORA: Etiqueta ARIA para cada número de página
+                    aria-label={`Ir a la página ${i + 1} de productos`}
                   >
                     {i + 1}
                   </Pagination.Item>
@@ -198,14 +190,12 @@ const ProductsPage = () => {
                 <Pagination.Next
                   onClick={() => paginate(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  aria-label="Ir a la página siguiente de productos" // MEJORA: Etiqueta ARIA para botón "Siguiente"
+                  aria-label="Ir a la página siguiente de productos"
                 />
               </Pagination>
             </Col>
           </Row>
         )}
-        {/* <-- Fin Paginación --> */}
-
       </Container>
     </>
   );

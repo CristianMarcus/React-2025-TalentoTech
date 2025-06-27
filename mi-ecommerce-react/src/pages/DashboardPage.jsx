@@ -8,10 +8,9 @@ import { Helmet } from 'react-helmet-async';
 
 // Importaciones de React-Bootstrap para layout y componentes
 import { Container, Row, Col, Card, Button, Badge, Modal } from 'react-bootstrap';
+import { MOCKAPI_PRODUCTS_URL } from '../Config/api';
 
 
-// TU URL de MockAPI
-const MOCKAPI_PRODUCTS_URL = "https://68599f039f6ef9611153b9ee.mockapi.io/api/v1/productos";
 
 const DashboardPage = () => {
   const [products, setProducts] = useState([]);

@@ -1,5 +1,5 @@
 // src/components/Header/Header.jsx
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react'; // Importa useState, useRef y useEffect
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useCarrito } from '../../context/CarritoContext';
@@ -15,11 +15,49 @@ const Header = () => {
 
   const totalCartItems = cartItems.reduce((total, item) => total + item.quantity, 0);
 
+  // === NUEVO ESTADO Y REFERENCIA ===
+  // Estado para controlar si la Navbar está expandida (abierta)
+  const [expanded, setExpanded] = useState(false); 
+  // Referencia al elemento de la Navbar en el DOM
+  const navbarRef = useRef(null); 
+
+  // Efecto para manejar clics fuera de la Navbar
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Si la Navbar está expandida Y el clic no fue dentro de la Navbar
+      // (navbarRef.current verifica que la referencia esté definida)
+      if (expanded && navbarRef.current && !navbarRef.current.contains(event.target)) {
+        setExpanded(false); // Colapsa la Navbar
+      }
+    };
+
+    // Añade el event listener al documento cuando el componente se monta
+    // Esto detectará clics en cualquier parte de la página
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Función de limpieza: remueve el event listener cuando el componente se desmonta
+    // Esto es crucial para evitar fugas de memoria
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [expanded]); // El efecto se re-ejecuta solo si el estado 'expanded' cambia
+
+  // === FIN DE NUEVO ESTADO Y REFERENCIA ===
+
   return (
-    // ¡CAMBIO AQUÍ! Quita bg="dark" y añade la clase custom-navbar-animated
-    <Navbar variant="dark" expand="lg" fixed="top" className="shadow-lg py-3 custom-navbar-animated" style={{ zIndex: 1060 }}>
+    // Usa el estado 'expanded' para controlar la Navbar de Bootstrap
+    // y onToggle para actualizar el estado cuando se hace clic en el botón de hamburguesa
+    <Navbar 
+      variant="dark" 
+      expand="lg" 
+      fixed="top" 
+      className="shadow-lg py-3 custom-navbar-animated" 
+      style={{ zIndex: 1060 }}
+      expanded={expanded} // Controla la expansión de la Navbar de Bootstrap
+      onToggle={() => setExpanded(!expanded)} // Invierte el estado al usar el toggle
+      ref={navbarRef} // Asigna la referencia al elemento Navbar
+    >
       <Container fluid>
-        {/* ... el resto de tu código de Navbar.Brand, Toggle, Collapse ... */}
         <Navbar.Brand
           as={Link}
           to="/"
@@ -28,13 +66,16 @@ const Header = () => {
           Mi<span className="text-info">eCommerce</span>
         </Navbar.Brand>
 
+        {/* Navbar.Toggle usa onToggle de la Navbar, no necesita cambios */}
         <Navbar.Toggle aria-controls="basic-navbar-nav" aria-label="Abrir navegación principal" />
 
-        <Navbar.Collapse id="basic-navbar-nav" className="bg-blue"> {/* Deja bg-dark aquí para el fondo del menú colapsado */}
+        {/* El fondo del menú colapsado. Lo cambiaste a bg-blue, asegúrate de que 'bg-blue' esté definido en tu CSS si no es una clase de Bootstrap. */}
+        <Navbar.Collapse id="basic-navbar-nav" className="bg-blue"> 
           <Nav
             className="ms-auto"
+            // Al seleccionar cualquier enlace de navegación, colapsa la Navbar
+            onSelect={() => setExpanded(false)} 
           >
-            {/* ... tus Nav.Link y botones ... */}
             <Nav.Link as={NavLink} to="/" className="mx-2 text-decoration-none" end>Inicio</Nav.Link>
             <Nav.Link as={NavLink} to="/products" className="mx-2 text-decoration-none">Productos</Nav.Link>
 
@@ -59,7 +100,8 @@ const Header = () => {
                 <Button
                   variant="danger"
                   className="rounded-pill px-4 ms-3"
-                  onClick={logout}
+                  // Cierra la Navbar al hacer clic en "Cerrar Sesión"
+                  onClick={() => { logout(); setExpanded(false); }} 
                   aria-label="Cerrar sesión"
                 >
                   Cerrar Sesión
@@ -67,7 +109,15 @@ const Header = () => {
               </>
             ) : (
               <Nav.Link as={NavLink} to="/login" className="mx-2">
-                <Button variant="primary" className="rounded-pill px-4" aria-label="Iniciar sesión">Login</Button>
+                <Button 
+                  variant="primary" 
+                  className="rounded-pill px-4" 
+                  aria-label="Iniciar sesión"
+                  // Cierra la Navbar al hacer clic en "Login"
+                  onClick={() => setExpanded(false)} 
+                >
+                  Login
+                </Button>
               </Nav.Link>
             )}
           </Nav>
