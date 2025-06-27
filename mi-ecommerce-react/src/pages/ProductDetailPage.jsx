@@ -1,4 +1,4 @@
-// src/pages/ProductDetailPage.jsx
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useCarrito } from '../context/CarritoContext';
@@ -6,23 +6,23 @@ import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet-async';
 
-// Importar componentes de React-Bootstrap
+
 import { Container, Row, Col, Card, Button, Placeholder } from 'react-bootstrap';
 import { MOCKAPI_PRODUCTS_URL } from '../Config/api';
 
-// Componente Skeleton para la carga (Actualizado con Bootstrap)
+
 const ProductDetailSkeleton = () => (
   <Container className="p-4 my-5">
     <Card className="p-4 rounded-3 shadow-lg border border-light animate-pulse d-flex flex-column flex-md-row align-items-center align-items-md-start gap-4">
-      {/* Columna de la Imagen Skeleton */}
+      
       <Col md={4} className="d-flex justify-content-center align-items-center p-3 bg-light rounded-3">
         <Placeholder as="div" animation="glow" className="w-100" style={{ height: '20rem' }}>
           <Placeholder className="w-100 h-100 bg-secondary rounded-3" />
         </Placeholder>
       </Col>
-      {/* Columna de Detalles Skeleton */}
+      
       <Col md={8} className="text-center text-md-start">
-        {/* CAMBIO CLAVE AQUÍ: De as="p" a as="div" */}
+        
         <Placeholder as="div" animation="glow">
           <Placeholder xs={8} className="h-5 mb-3" />
           <Placeholder xs={12} className="h-4 mb-2" />
@@ -47,7 +47,7 @@ const ProductDetailPage = () => {
 
   const { handleAddToCart } = useCarrito();
 
-  // URL de imagen de placeholder más descriptiva
+  
   const PLACEHOLDER_IMAGE = 'https://via.placeholder.com/400x300?text=Imagen+No+Disponible';
 
   useEffect(() => {
@@ -63,12 +63,12 @@ const ProductDetailPage = () => {
           throw new Error(`Error al cargar el producto: ${response.statusText}`);
         }
         const data = await response.json();
-        // === CAMBIO CLAVE AQUÍ: Mapear 'avatar' a 'image' ===
+        
         const productWithImage = {
           ...data,
-          image: data.avatar // Asigna el valor de 'avatar' a 'image'
+          image: data.avatar 
         };
-        setProduct(productWithImage); // Usa el producto con la propiedad 'image'
+        setProduct(productWithImage);
       } catch (err) {
         console.error("Error al obtener detalle del producto:", err);
         setError(err.message || 'No se pudo cargar el detalle del producto.');
@@ -169,22 +169,22 @@ const ProductDetailPage = () => {
         <Container>
           <Card className="rounded-3 shadow-lg border border-light p-4">
             <Row className="g-4 align-items-center">
-              {/* Columna de la Imagen */}
+              
               <Col lg={6} className="d-flex justify-content-center align-items-center p-3 bg-light rounded-3">
                 <img
                   src={product.image && product.image.trim() !== '' ? product.image : PLACEHOLDER_IMAGE} 
                   alt={product.name}
                   className="img-fluid rounded-3 shadow-sm"
                   style={{ maxHeight: '24rem', objectFit: 'contain' }}
-                  onError={(e) => { // Añadido el manejador de errores de imagen
-                    e.currentTarget.onerror = null; // Previene bucles infinitos de error
-                    e.currentTarget.src = PLACEHOLDER_IMAGE; // Establece la imagen de placeholder
+                  onError={(e) => { 
+                    e.currentTarget.onerror = null; 
+                    e.currentTarget.src = PLACEHOLDER_IMAGE; 
                     console.warn(`Error al cargar la imagen de ${product.name}. Usando placeholder.`);
                   }}
                 />
               </Col>
 
-              {/* Columna de Detalles del Producto */}
+              
               <Col lg={6} className="d-flex flex-column justify-content-between">
                 <div>
                   <h1 className="display-4 fw-bold text-dark mb-3">{product.name}</h1>

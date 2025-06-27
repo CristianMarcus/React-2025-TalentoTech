@@ -1,5 +1,5 @@
-// src/App.jsx
-import React, { lazy, Suspense } from 'react'; // Importa lazy y Suspense
+
+import React, { lazy, Suspense } from 'react'; 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,23 +8,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
 
-// --- Importaciones de Componentes (Ahora Lazy Loaded) ---
+
 import Layout from './components/Layout/Layout';
-import PrivateRoute from './components/Auth/PrivateRoute'; // PrivateRoute no necesita lazy loading si es un wrapper simple
+import PrivateRoute from './components/Auth/PrivateRoute'; 
 
 import { CarritoProvider } from './context/CarritoContext';
 import { AuthProvider } from './context/AuthContext';
 
-// Importa tu nuevo componente FloatingCart
+
 import FloatingCart from './components/FloatingCart/FloatingCart';
 
-// === NUEVA IMPORTACIÓN: Tu componente de carga sofisticado ===
-import LoadingScreen from './components/LoadingScreen/LoadingScreen'; 
-// === FIN DE NUEVA IMPORTACIÓN ===
 
-// ====================================================================
-// Define tus componentes de página para Carga Perezosa
-// ====================================================================
+import LoadingScreen from './components/LoadingScreen/LoadingScreen'; 
+
+
+
 
 const HomePage = lazy(() => import('./pages/HomePage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
@@ -32,9 +30,9 @@ const ProductsPage = lazy(() => import('./pages/ProductsPage'));
 const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage'));
 const CartPage = lazy(() => import('./pages/CartPage'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
-const Login = lazy(() => import('./components/Auth/Login')); // El componente de Login también puede ser lazy loaded
+const Login = lazy(() => import('./components/Auth/Login')); 
 
-// ====================================================================
+
 
 function App() {
   return (
@@ -43,10 +41,7 @@ function App() {
         <AuthProvider>
           <CarritoProvider>
             <Layout>
-              {/* ==================================================================== */}
-              {/* Envuelve tus rutas con Suspense */}
-              {/* Ahora usa tu componente LoadingScreen como fallback */}
-              {/* ==================================================================== */}
+             
               <Suspense fallback={<LoadingScreen />}>
                 <Routes>
                   <Route path="/" element={<HomePage />} />
@@ -55,7 +50,7 @@ function App() {
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/login" element={<Login />} />
 
-                  {/* Rutas Protegidas (envueltas en PrivateRoute, que a su vez renderizará el componente lazy) */}
+                  
                   <Route
                     path="/dashboard"
                     element={
@@ -75,11 +70,11 @@ function App() {
 
                   <Route path="*" element={<h2 className="text-3xl font-bold text-center mt-10">404 - Página No Encontrada</h2>} />
                 </Routes>
-              </Suspense> {/* Cierre de Suspense */}
+              </Suspense> 
             </Layout>
-            {/* Agrega el FloatingCart aquí, fuera de Layout pero dentro de los Providers */}
+            
             <FloatingCart />
-            {/* Agrega ToastContainer aquí, fuera de Layout pero dentro de Router/Providers */}
+            
             <ToastContainer
               position="top-right"
               autoClose={3000}

@@ -1,14 +1,13 @@
-// src/components/LoadingScreen/LoadingScreen.jsx
+
 import React from 'react';
-import { Spinner } from 'react-bootstrap'; // Puedes seguir usando el Spinner de Bootstrap
-import './LoadingScreen.css'; // Crearemos este archivo CSS
+import { Spinner } from 'react-bootstrap'; 
+import './LoadingScreen.css'; 
 
 const LoadingScreen = () => {
   return (
     <div className="loading-screen-container">
       <div className="loading-content">
-        {/* Puedes añadir tu logo SVG aquí o una imagen */}
-        {/* Por ejemplo, el SVG de Talent Tech que generamos antes */}
+        
         <svg className="loading-logo" width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20Z" fill="#3498db"/> {/* Engranaje */}
           <path d="M12 5.5C11.17 5.5 10.5 6.17 10.5 7V8.5C10.5 9.33 11.17 10 12 10C12.83 10 13.5 9.33 13.5 8.5V7C13.5 6.17 12.83 5.5 12 5.5Z" fill="#f1c40f"/> {/* Bombilla parte superior */}

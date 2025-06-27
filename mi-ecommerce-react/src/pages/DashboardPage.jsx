@@ -1,4 +1,4 @@
-// src/pages/DashboardPage.jsx
+
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import ProductForm from '../components/ProductForm/ProductForm';
@@ -6,7 +6,7 @@ import ConfirmationModal from '../components/ConfirmationModal';
 import { FaEdit, FaTrash, FaPlusCircle } from 'react-icons/fa';
 import { Helmet } from 'react-helmet-async';
 
-// Importaciones de React-Bootstrap para layout y componentes
+
 import { Container, Row, Col, Card, Button, Badge, Modal } from 'react-bootstrap';
 import { MOCKAPI_PRODUCTS_URL } from '../Config/api';
 
@@ -23,7 +23,7 @@ const DashboardPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // === CAMBIO AQUÍ: Cambiando la URL del placeholder a una más descriptiva ===
+  
   const PLACEHOLDER_IMAGE = 'https://via.placeholder.com/200x150?text=Imagen+No+Disponible';
 
   const fetchProducts = async () => {
@@ -192,10 +192,10 @@ const DashboardPage = () => {
                     alt={product.name}
                     className="img-fluid object-fit-cover rounded-top"
                     style={{ height: '12rem' }}
-                    // === CAMBIO CLAVE AQUÍ: Añadiendo el manejador de errores de imagen ===
+                   
                     onError={(e) => {
-                      e.currentTarget.onerror = null; // Previene bucles infinitos de error
-                      e.currentTarget.src = PLACEHOLDER_IMAGE; // Establece la imagen de placeholder
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = PLACEHOLDER_IMAGE; 
                       console.warn(`Error al cargar la imagen para ${product.name}. Usando placeholder.`);
                     }}
                   />

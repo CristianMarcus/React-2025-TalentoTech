@@ -1,4 +1,4 @@
-// src/context/CarritoContext.jsx
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
@@ -24,7 +24,7 @@ export const CarritoProvider = ({ children }) => {
     
 
     const handleAddToCart = (product, quantity = 1) => {
-        // >>>>> ESTA ES LA LÍNEA AÑADIDA <<<<<
+        
         console.log('Producto a añadir al carrito - ID:', product.id, 'Imagen:', product.image);
 
         setCartItems(prevItems => {
@@ -42,7 +42,7 @@ export const CarritoProvider = ({ children }) => {
                 return [...prevItems, { ...product, quantity }];
             }
         });
-        // Notificación al añadir
+       
         toast.success(`${quantity} x ${product.name} añadido al carrito!`, {
             position: "bottom-right",
             autoClose: 2000,
@@ -59,7 +59,7 @@ export const CarritoProvider = ({ children }) => {
             
             const updatedQuantity = Math.max(1, newQuantity);
 
-            // Eliminar el ítem si la cantidad es 0 o menos
+            
             if (updatedQuantity === 0) {
                 toast.info('Producto eliminado del carrito.', {
                     position: "bottom-right",
@@ -83,7 +83,7 @@ export const CarritoProvider = ({ children }) => {
 
     const handleRemoveItem = (itemId) => {
         setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));
-        // Notificación al eliminar
+        
         toast.info('Producto eliminado del carrito.', {
             position: "bottom-right",
             autoClose: 2000,
@@ -97,7 +97,7 @@ export const CarritoProvider = ({ children }) => {
 
     const clearCart = () => {
         setCartItems([]);
-        // Notificación al vaciar
+        
         toast.info('El carrito ha sido vaciado.', {
             position: "bottom-right",
             autoClose: 2000,

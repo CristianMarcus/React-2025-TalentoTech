@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button, Badge } from 'react-bootstrap';
-import { FaShoppingCart, FaTimes, FaPlus, FaMinus, FaTrash } from 'react-icons/fa'; // Importa nuevos iconos
+import { FaShoppingCart, FaTimes, FaPlus, FaMinus, FaTrash } from 'react-icons/fa'; 
 import { useCarrito } from '../../context/CarritoContext';
-import { toast } from 'react-toastify'; // Necesitamos toast para los mensajes de finalizar compra/vaciar
+import { toast } from 'react-toastify'; 
 
 const FloatingCart = () => {
-  // Desestructuramos más funciones del contexto del carrito
+  
   const { cartItems, handleUpdateQuantity, handleRemoveItem, clearCart } = useCarrito();
   
   const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
@@ -20,11 +20,11 @@ const FloatingCart = () => {
     setIsOpen(!isOpen);
   };
 
-  // Lógica de Finalizar Compra (similar a la de Cart.jsx)
+  
   const handleCheckout = () => {
     if (cartItems.length === 0) {
       toast.warn('Tu carrito está vacío. ¡No hay nada que comprar!', {
-        position: "bottom-center", // Cambiado a bottom-center para no solapar el botón flotante
+        position: "bottom-center", 
         autoClose: 3000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -35,8 +35,8 @@ const FloatingCart = () => {
       return;
     }
 
-    clearCart(); // Vacía el carrito
-    setIsOpen(false); // Cierra el mini-carrito después de la compra
+    clearCart(); 
+    setIsOpen(false);
     toast.success('¡Compra finalizada con éxito! Gracias por tu pedido.', {
       position: "top-center",
       autoClose: 4000,
@@ -48,7 +48,7 @@ const FloatingCart = () => {
     });
   };
 
-  // Lógica de Vaciar Carrito (similar a la de Cart.jsx)
+  
   const handleClearCart = () => {
     if (cartItems.length === 0) {
       toast.info('El carrito ya está vacío.', {
@@ -62,8 +62,8 @@ const FloatingCart = () => {
       });
       return;
     }
-    clearCart(); // Vacía el carrito
-    setIsOpen(false); // Cierra el mini-carrito después de vaciarlo
+    clearCart(); 
+    setIsOpen(false); 
     toast.info('El carrito ha sido vaciado.', {
       position: "bottom-center",
       autoClose: 2000,
@@ -76,7 +76,7 @@ const FloatingCart = () => {
   };
 
 
-  // Efecto para detectar clics fuera del componente y cerrarlo
+  
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (cartRef.current && !cartRef.current.contains(event.target)) {
@@ -93,19 +93,19 @@ const FloatingCart = () => {
     };
   }, [isOpen]);
 
-  // Efecto para cerrar el mini-carrito cuando la ruta cambia
+  
   useEffect(() => {
     setIsOpen(false);
   }, [location]);
 
-  // Si el carrito está vacío y no está abierto, no renderizar nada
+  
   if (itemCount === 0 && !isOpen) { 
     return null; 
   }
 
   return (
     <div ref={cartRef}>
-      {/* Botón Flotante de Carrito */}
+      
       <Button
         onClick={toggleCart}
         variant="primary"
@@ -133,7 +133,7 @@ const FloatingCart = () => {
         )}
       </Button>
 
-      {/* Contenido del Mini-Carrito / Sidebar */}
+      
       {isOpen && (
         <div
           className="bg-dark text-white p-4 rounded-3 shadow-lg animate__animated animate__fadeInRight"

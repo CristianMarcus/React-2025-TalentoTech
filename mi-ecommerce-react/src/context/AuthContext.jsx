@@ -1,4 +1,4 @@
-// src/context/AuthContext.jsx
+
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { toast } from 'react-toastify';
 
@@ -31,17 +31,17 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user]);
 
-  // Función para simular el inicio de sesión con credenciales específicas
+  
   const login = (username, password) => {
-    // AHORA: Solo permite iniciar sesión con 'admin' / 'admin'
+    
     if (username === 'admin' && password === 'admin') {
-      const userData = { username, role: 'admin' }; // Asignamos rol 'admin'
+      const userData = { username, role: 'admin' }; 
       setUser(userData);
       toast.success(`¡Bienvenido, ${username}! Has iniciado sesión.`, { autoClose: 2000 });
-      return true; // Login exitoso
+      return true;
     } else {
       toast.error("Credenciales incorrectas. Intenta con 'admin' / 'admin'.", { autoClose: 3000 });
-      return false; // Login fallido
+      return false; 
     }
   };
 

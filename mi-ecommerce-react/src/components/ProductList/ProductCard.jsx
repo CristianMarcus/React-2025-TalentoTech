@@ -1,14 +1,14 @@
-// src/components/ProductList/ProductCard.jsx
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCarrito } from '../../context/CarritoContext';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 
-// Importar componentes de React-Bootstrap
+
 import { Card, Button } from 'react-bootstrap';
 
-// === NUEVO: Definición del PLACEHOLDER_IMAGE ===
+
 const PLACEHOLDER_IMAGE = 'https://via.placeholder.com/400x300?text=Imagen+No+Disponible';
 
 const ProductCard = ({ product, variants }) => {
@@ -28,18 +28,18 @@ const ProductCard = ({ product, variants }) => {
       className="h-100"
     >
       <Card className="bg-white rounded-4 shadow-lg border border-light p-4 d-flex flex-column h-100 text-center">
-        {/* Enlace a detalles del producto - AÑADIDO aria-label */}
+       
         <Link to={`/products/${product.id}`} className="d-block mx-auto mb-3" aria-label={`Ver detalles de ${product.name}`}>
           <Card.Img
             variant="top"
-            // === CAMBIO CRÍTICO AQUÍ: Ahora usando product.image ===
+           
             src={product.image && product.image.trim() !== '' ? product.image : PLACEHOLDER_IMAGE}
             alt={product.name}
             className="rounded-3 shadow-sm"
             style={{ width: '12rem', height: '12rem', objectFit: 'contain' }}
             onError={(e) => {
-              e.currentTarget.onerror = null; // Previene bucles infinitos de error
-              e.currentTarget.src = PLACEHOLDER_IMAGE; // Establece la imagen de placeholder
+              e.currentTarget.onerror = null; 
+              e.currentTarget.src = PLACEHOLDER_IMAGE; 
               console.warn(`Error al cargar la imagen para el producto ${product.name} (ID: ${product.id}). Usando placeholder.`);
             }}
           />
@@ -55,7 +55,7 @@ const ProductCard = ({ product, variants }) => {
         </Card.Body>
 
         <div className="d-flex flex-column gap-2 w-100">
-          {/* Botón Agregar al Carrito - No necesita aria-label, el texto es claro */}
+         
           <motion.button
             onClick={() => {
               handleAddToCart(product);
@@ -70,7 +70,7 @@ const ProductCard = ({ product, variants }) => {
           >
             Agregar al Carrito
           </motion.button>
-          {/* Botón Ver Detalles - No necesita aria-label, el texto es claro */}
+          
           <Button
             as={Link}
             to={`/products/${product.id}`}

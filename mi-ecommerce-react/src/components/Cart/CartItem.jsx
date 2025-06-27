@@ -1,32 +1,32 @@
-// src/components/Cart/CartItem.jsx
+
 import React from 'react';
 import { Row, Col, Button, Card } from 'react-bootstrap';
 
 const CartItem = ({ item, onUpdateQuantity, onRemoveItem }) => {
   const { image, name, price = 0, quantity = 0, id } = item || {};
-  // URL de imagen de placeholder más descriptiva y adecuada para miniaturas
+  
   const PLACEHOLDER_IMAGE = 'https://via.placeholder.com/100x100?text=Sin+Imagen';
 
   return (
     <Card className="mb-3 shadow-sm border border-secondary bg-dark text-white">
       <Card.Body>
         <Row className="align-items-center g-3">
-          {/* Columna para la Imagen */}
+          
           <Col xs={4} sm={3} md={2} className="d-flex justify-content-center align-items-center">
             <img
               src={image && image.trim() !== '' ? image : PLACEHOLDER_IMAGE}
               alt={name || 'Producto en el carrito'}
               className="img-fluid rounded shadow-sm border border-secondary p-1"
               style={{ width: '80px', height: '80px', objectFit: 'contain' }}
-              onError={(e) => { // Añadido el manejador de errores de imagen
-                e.currentTarget.onerror = null; // Previene bucles infinitos de error
-                e.currentTarget.src = PLACEHOLDER_IMAGE; // Establece la imagen de placeholder
+              onError={(e) => { 
+                e.currentTarget.onerror = null; 
+                e.currentTarget.src = PLACEHOLDER_IMAGE; 
                 console.warn(`Error al cargar la imagen de ${name || 'un producto'}. Usando placeholder.`);
               }}
             />
           </Col>
 
-          {/* Columna para Nombre y Precio */}
+          
           <Col xs={8} sm={9} md={5}>
             <h5 className="fw-semibold mb-1" title={name}>
               {name || 'Producto Desconocido'}
@@ -34,13 +34,13 @@ const CartItem = ({ item, onUpdateQuantity, onRemoveItem }) => {
             <p className="text-light mb-2">${price.toFixed(2)}</p>
           </Col>
 
-          {/* Columna para Controles de Cantidad, PRECIO TOTAL Y Botón Eliminar */}
+          
           <Col
             xs={12}
             md={5}
             className="d-flex flex-column flex-md-row justify-content-md-end align-items-center gap-2 mt-2 mt-md-0 flex-wrap"
           >
-            {/* Grupo de botones para controlar la cantidad */}
+            
             <div className="d-flex align-items-center me-md-2 w-auto">
               <Button
                 onClick={() => onUpdateQuantity(id, quantity - 1)}
@@ -64,12 +64,12 @@ const CartItem = ({ item, onUpdateQuantity, onRemoveItem }) => {
               </Button>
             </div>
             
-            {/* Precio total por item visible solo en escritorio */}
+            
             <span className="fw-bold fs-5 text-success mb-0 d-none d-md-inline-block ms-md-auto me-2">
                 ${(price * quantity).toFixed(2)}
             </span>
 
-            {/* Botón Eliminar */}
+            
             <Button
               onClick={() => onRemoveItem(id)}
               variant="danger"
@@ -80,7 +80,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemoveItem }) => {
               Eliminar
             </Button>
           </Col>
-          {/* Precio total visible solo en móviles, en su propia fila para evitar superposición */}
+          
           <Col xs={12} className="d-block d-md-none text-center mt-2">
             <p className="fw-bold fs-4 text-success mb-0">Total: ${(price * quantity).toFixed(2)}</p>
           </Col>

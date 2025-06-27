@@ -1,4 +1,4 @@
-import React from 'react';
+
 import CartItem from './CartItem';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCarrito } from '../../context/CarritoContext';
@@ -50,7 +50,7 @@ const Cart = () => {
                 as={Link}
                 to="/products"
                 variant="primary"
-                className="fw-semibold py-3 px-5 rounded-3 shadow text-decoration-none" // text-decoration-none AÑADIDO
+                className="fw-semibold py-3 px-5 rounded-3 shadow text-decoration-none" 
               >
                 Ir a Productos
               </Button>
@@ -83,7 +83,7 @@ const Cart = () => {
                   Continuar Comprando
                 </Button>
 
-                {/* CORRECCIÓN DE RESPONSIVIDAD AQUÍ: d-flex flex-column para apilar en pantallas pequeñas, flex-sm-row para fila en 'sm' y más grandes */}
+                
                 <div className="d-flex flex-column flex-sm-row gap-2 justify-content-end flex-grow-1 flex-md-grow-0">
                   <Button
                     variant="outline-danger"

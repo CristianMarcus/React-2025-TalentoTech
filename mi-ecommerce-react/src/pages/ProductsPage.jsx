@@ -1,20 +1,20 @@
-// src/pages/ProductsPage.jsx
+
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import { Helmet } from 'react-helmet-async';
 
-// Importar componentes de React-Bootstrap
+
 import { Container, Row, Col, Card, Button as BootstrapButton, Form, Pagination, InputGroup } from 'react-bootstrap';
 
 import ProductCard from '../components/ProductList/ProductCard';
 
-// === CAMBIO CLAVE AQUÍ: Importa la URL desde el archivo de configuración ===
+
 import { MOCKAPI_PRODUCTS_URL } from '../Config/api'; 
-// === FIN DEL CAMBIO ===
 
 
-// Componente Skeleton para la carga (Actualizado con Bootstrap y animación de pulso)
+
+
 const ProductCardSkeleton = () => (
   <Card className="h-100 shadow-sm" style={{ overflow: 'hidden' }}>
     <div className="w-100 bg-secondary animate-pulse" style={{ height: '200px' }}></div>
@@ -41,7 +41,7 @@ const ProductsPage = () => {
       setLoading(true);
       setError(null);
       try {
-        // === Usa la constante importada directamente ===
+       
         const response = await fetch(MOCKAPI_PRODUCTS_URL); 
         if (!response.ok) {
           throw new Error('Error al cargar los productos del catálogo.');

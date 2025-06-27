@@ -1,8 +1,9 @@
 // src/components/admin/ProductForm.jsx
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify'; // <-- Importa toast
-// Importa componentes o clases de Bootstrap si es necesario para un control más específico
-// import { Form, Button, Container, Row, Col } from 'react-bootstrap'; 
+ 
+import { MOCKAPI_PRODUCTS_URL } from '../Config/api';
+
 
 const ProductForm = ({ onProductAdded, productToEdit }) => {
   const [name, setName] = useState('');
@@ -29,7 +30,7 @@ const ProductForm = ({ onProductAdded, productToEdit }) => {
     setValidationErrors({});
   }, [productToEdit]);
 
-  const MOCKAPI_PRODUCTS_URL = "https://68599f039f6ef9611153b9ee.mockapi.io/api/v1/productos";
+  
 
   const validateForm = () => {
     const errors = {};

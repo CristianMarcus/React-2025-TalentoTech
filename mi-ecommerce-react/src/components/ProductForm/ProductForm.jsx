@@ -1,19 +1,19 @@
-// src/components/ProductForm/ProductForm.jsx
+
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-// === IMPORTACIONES DE REACT-BOOTSTRAP ===
+
 import { Form, Button, FormGroup, FormLabel, FormControl, Image } from 'react-bootstrap';
 
-// === Definición del PLACEHOLDER_PREVIEW_IMAGE para el formulario ===
+
 const PLACEHOLDER_PREVIEW_IMAGE = 'https://placehold.co/150x150?text=No+Imagen+Disponible'; 
 
 const ProductForm = ({ productToEdit, onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
-    title: '',        // Corresponde a 'name' del API
+    title: '',        
     description: '',
     price: '',
-    category: '',     // Campo de categoría
-    image: '',        // Corresponde a 'avatar' del API
+    category: '',     
+    image: '',       
   });
   const [errors, setErrors] = useState({});
 
@@ -35,7 +35,7 @@ const ProductForm = ({ productToEdit, onSubmit, onCancel }) => {
         image: '',
       });
     }
-    setErrors({}); // Limpiar errores al cambiar de producto o añadir nuevo
+    setErrors({}); 
   }, [productToEdit]);
 
   const handleChange = (e) => {
@@ -44,7 +44,7 @@ const ProductForm = ({ productToEdit, onSubmit, onCancel }) => {
       ...prevData,
       [name]: value,
     }));
-    // Limpiar el error específico del campo cuando el usuario empieza a escribir
+    
     if (errors[name]) {
       setErrors(prevErrors => ({ ...prevErrors, [name]: '' }));
     }
@@ -90,19 +90,9 @@ const ProductForm = ({ productToEdit, onSubmit, onCancel }) => {
   };
 
   return (
-    // === USO DE COMPONENTES Y CLASES DE BOOTSTRAP ===
+   
     <Form onSubmit={handleSubmit} className="p-4 rounded shadow-lg bg-dark text-white">
-      {/* SE HA ELIMINADO EL H3 Y EL BOTÓN DE CERRAR DE AQUÍ, YA QUE EL MODAL PADRE LOS PROPORCIONA */}
-      {/* <h3 className="mb-4 text-center text-white">
-        {productToEdit ? 'Editar Producto' : 'Agregar Nuevo Producto'}
-      </h3>
-      <Button
-        variant="close" 
-        onClick={onCancel}
-        className="position-absolute top-0 end-0 m-3"
-        aria-label="Cerrar formulario"
-      />
-      */}
+      
 
       <FormGroup className="mb-3">
         <FormLabel htmlFor="title">Título *</FormLabel>
@@ -154,7 +144,7 @@ const ProductForm = ({ productToEdit, onSubmit, onCancel }) => {
         {errors.price && <FormControl.Feedback type="invalid" id="priceError">{errors.price}</FormControl.Feedback>}
       </FormGroup>
 
-      {/* === CAMPO: Categoría === */}
+     
       <FormGroup className="mb-3">
         <FormLabel htmlFor="category">Categoría *</FormLabel>
         <FormControl
@@ -185,12 +175,12 @@ const ProductForm = ({ productToEdit, onSubmit, onCancel }) => {
         />
         {errors.image && <FormControl.Feedback type="invalid" id="imageError">{errors.image}</FormControl.Feedback>}
         
-        {/* Este Form.Text se mantiene si es relevante para la entrada de URL */}
+       
         <Form.Text className="text-muted mt-1">
           Para una aplicación real, aquí podrías subir archivos directamente a un servicio de almacenamiento (ej. Cloudinary). Con MockAPI, necesitas una URL pública.
         </Form.Text>
 
-        {/* === Previsualización de la imagen === */}
+        
         <div className="mt-3 text-center">
           <Image 
             src={formData.image && formData.image.trim() !== '' ? formData.image : PLACEHOLDER_PREVIEW_IMAGE} 
@@ -200,8 +190,8 @@ const ProductForm = ({ productToEdit, onSubmit, onCancel }) => {
               e.currentTarget.onerror = null;
               e.currentTarget.src = PLACEHOLDER_PREVIEW_IMAGE;
             }}
-            fluid // Hace que la imagen sea responsive
-            thumbnail // Añade un borde y relleno ligero
+            fluid 
+            thumbnail 
           />
         </div>
       </FormGroup>
